@@ -4,26 +4,47 @@ export default function TextForm(props) {
     const handleOnChange = (event) =>{
         // console.log("on change");
         setText(event.target.value);
+        //------------------------------------
+        setChars(text.length);
+        // console.log(text);
+        let arr = text.split(/[ ]+/)
+        let len = arr.length;
+
+        if(len==1 && arr[0]=='')
+            len -= 1;
+        else if(arr[len-1]=='' && arr[0]=='')
+            len -= 2;
+        else if(arr[len-1]=='' || arr[0]=='')
+            len -= 2;
         
-        let count = text.length;
-        if(count == 0){
-            setChars(0);
-            setWords(0);
-        }
-        else{
-            setChars(count);
-            setWords(text.split(" ").length);
-        }
+        setWords(len);
+        // console.log(arr);
+
+        
+
+        // let arr = text.split(/[ ]+/);
+        //-----------------------------------------
+        // let count = text.length;
+        // if(count == 0){
+        //     setChars(0);
+        //     setWords(0);
+        // }
+        // else{
+        //     setChars(count);
+        //     setWords(text.split(" ").length);
+        // }
     }
     
     const handleUpClick = () =>{
         // console.log("Upper case was clicked" + text);
         let newText = text.toUpperCase();
         setText(newText);
+        props.showAlert("Text converted to Uppercase!!","success");
     }
     const handleLoClick = () =>{
         let newText = text.toLowerCase();
         setText(newText);
+        props.showAlert("Text converted to Lowercase!!","success");
     }
     const handleTiClick = () =>{
         let newText = "";
@@ -37,17 +58,20 @@ export default function TextForm(props) {
 
         newText = newArr.join(" ");
         setText(newText);
+        props.showAlert("Text converted to Titlecase!!","success");
     }
 
     const handleClear = () =>{
         let newText = '';
         setText(newText);
+        props.showAlert("Text is cleared!!","success");
     }
 
     const handleExtraSpace = () =>{
         let arr = text.split(/[ ]+/);
         let newText = arr.join(" ");
         setText(newText);
+        props.showAlert("Extra spaces are removed from text!!","success");
     }
 
     const [text, setText] = useState('');
@@ -59,7 +83,7 @@ export default function TextForm(props) {
         <div className="conatainer"  >
             <h1 className='mt-3' style={{color: props.mode=='light'?'black':'white'}}>{props.heading}</h1>
             <div className="mb-3">
-            <textarea className="form-control" id="myBox" value={text} style={{backgroundColor: props.mode==='light'?'#f2eeff':'grey', color: props.mode=='light'?'black':'white'}} onChange={handleOnChange} rows="8"></textarea>
+            <textarea className="form-control" id="myBox" value={text} style={{backgroundColor: props.mode==='light'?'#f8f9fa':'#2e3945', color: props.mode=='light'?'black':'white'}} onChange={handleOnChange} rows="8"></textarea>
             </div>
             <button className="btn btn-primary mx-1" onClick={handleUpClick} >Convert to Uppercase</button>
             <button className="btn btn-primary mx-1" onClick={handleLoClick} >Convert to Lowercase</button>
@@ -67,7 +91,7 @@ export default function TextForm(props) {
             <button className="btn btn-primary mx-1" onClick={handleExtraSpace} >Remove Extra spaces</button>
             <button className="btn btn-primary mx-1" onClick={handleClear} >Clear Text</button>
             
-
+            {/* copied to clipboard functionality */}
             {/* find replace */}
             {/* //To find the the no. of occurrences of a given word or letter in the text  */}
 
